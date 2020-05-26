@@ -56,15 +56,12 @@ def min_cost_matching(
     cost_matrix[cost_matrix > max_distance] = max_distance + 1e-5
     indices = linear_sum_assignment(cost_matrix)
 
-    print(cost_matrix)
-    print(indices)
-
     matches, unmatched_tracks, unmatched_detections = [], [], []
     for col, detection_idx in enumerate(detection_indices):
-        if col not in indices[: 1]:
+        if not any(i == col for i in indices[: 1]):
             unmatched_detections.append(detection_idx)
     for row, track_idx in enumerate(track_indices):
-        if row not in indices[: 0]:
+        if not any(i == row for i in indices[: 0]):
             unmatched_tracks.append(track_idx)
     for row, col in zip(*indices):
         track_idx = track_indices[row]
